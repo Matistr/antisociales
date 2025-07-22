@@ -121,3 +121,16 @@ textarea {
     letter-spacing: 1px;
     box-shadow: 0 1px 6px #0006;
 }
+
+.fase-torneo {
+    margin-bottom: 32px;
+    padding: 10px 0;
+}
+.fase-torneo label {
+    margin: 0 12px;
+    cursor: pointer;
+}
+.fase-torneo input[type="radio"] {
+    accent-color: #ff1744;
+    margin-right: 6px;
+}
