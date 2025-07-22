@@ -11,15 +11,106 @@
         <h1>Emparejamientos Automáticos en Torneos de Videojuegos</h1>
     </header>
     <main>
-        <section id="matchmaking">
-            <h2>Emparejamiento</h2>
-            <button id="startMatchmaking">Iniciar Emparejamiento</button>
-            <div id="matchResults"></div>
+        <section id="matchmaking" class="card">
+            <h2 style="color:#ff1744;">Emparejamiento</h2>
+            <label for="modalidad" style="color: #fff;">Selecciona la modalidad:</label>
+            <select id="modalidad" class="select-red">
+                <option value="1v1">1 vs 1</option>
+                <option value="2v2">2 vs 2</option>
+                <option value="4p">Todos vs Todos (4 jugadores)</option>
+            </select>
+            <div id="inputContainer" style="margin-top:10px;">
+                <label for="participantes" style="color: #fff;">Nombres de los jugadores (uno por línea):</label>
+                <textarea id="participantes" rows="6" placeholder="Ejemplo:&#10;Jugador1&#10;Jugador2&#10;Jugador3"></textarea>
+            </div>
+            <button id="startMatchmaking" class="button-red">Iniciar Emparejamiento</button>
+            <div id="matchResults" class="card" style="margin-top:20px;"></div>
         </section>
     </main>
-    <footer>
+    <footer class="footer">
         <p>&copy; 2023 Torneos de Videojuegos. Todos los derechos reservados.</p>
     </footer>
-    <script src="scripts/main.js"></script>
+    <script>
+    // filepath: c:\Users\Home\Desktop\antisociales\src\index.html (inline script)
+    const modalidad = document.getElementById('modalidad');
+    const inputContainer = document.getElementById('inputContainer');
+    const matchResults = document.getElementById('matchResults');
+    let inputRef = document.getElementById('participantes');
+
+    modalidad.addEventListener('change', function() {
+        if (modalidad.value === '2v2') {
+            inputContainer.innerHTML = `
+                <label for="equipos" style="color: #fff;">Nombres de los equipos (uno por línea, cada equipo separado por coma):</label>
+                <textarea id="equipos" rows="6" placeholder="Ejemplo:&#10;Equipo1A,Equipo1B&#10;Equipo2A,Equipo2B"></textarea>
+            `;
+            inputRef = document.getElementById('equipos');
+        } else {
+            inputContainer.innerHTML = `
+                <label for="participantes" style="color: #fff;">Nombres de los jugadores (uno por línea):</label>
+                <textarea id="participantes" rows="6" placeholder="Ejemplo:&#10;Jugador1&#10;Jugador2&#10;Jugador3"></textarea>
+            `;
+            inputRef = document.getElementById('participantes');
+        }
+    });
+
+    document.getElementById('startMatchmaking').addEventListener('click', function() {
+        let data = inputRef.value.trim().split('\n').map(x => x.trim()).filter(Boolean);
+        matchResults.innerHTML = '';
+        if (modalidad.value === '2v2') {
+            // Cada línea es un equipo, separado por coma
+            let equipos = data.map(eq => eq.split(',').map(j => j.trim()).filter(Boolean));
+            if (equipos.some(eq => eq.length !== 2)) {
+                matchResults.innerHTML = '<span style="color:#ff1744;">Cada equipo debe tener 2 jugadores.</span>';
+                return;
+            }
+            shuffleArray(equipos);
+            let rondas = '';
+            for (let i = 0; i < equipos.length; i += 2) {
+                if (equipos[i+1]) {
+                    rondas += `<div class="match-red">${equipos[i][0]} & ${equipos[i][1]} <span style="color:#ff1744;">VS</span> ${equipos[i+1][0]} & ${equipos[i+1][1]}</div>`;
+                } else {
+                    rondas += `<div class="match-red">${equipos[i][0]} & ${equipos[i][1]} <span style="color:#ff1744;">(sin rival)</span></div>`;
+                }
+            }
+            matchResults.innerHTML = rondas;
+        } else if (modalidad.value === '4p') {
+            if (data.length !== 4) {
+                matchResults.innerHTML = '<span style="color:#ff1744;">Debes ingresar exactamente 4 jugadores.</span>';
+                return;
+            }
+            shuffleArray(data);
+            let todosVsTodos = '';
+            for (let i = 0; i < data.length; i++) {
+                for (let j = i+1; j < data.length; j++) {
+                    todosVsTodos += `<div class="match-red">${data[i]} <span style="color:#ff1744;">VS</span> ${data[j]}</div>`;
+                }
+            }
+            matchResults.innerHTML = todosVsTodos;
+        } else {
+            // 1v1
+            if (data.length < 2) {
+                matchResults.innerHTML = '<span style="color:#ff1744;">Debes ingresar al menos 2 jugadores.</span>';
+                return;
+            }
+            shuffleArray(data);
+            let rondas = '';
+            for (let i = 0; i < data.length; i += 2) {
+                if (data[i+1]) {
+                    rondas += `<div class="match-red">${data[i]} <span style="color:#ff1744;">VS</span> ${data[i+1]}</div>`;
+                } else {
+                    rondas += `<div class="match-red">${data[i]} <span style="color:#ff1744;">(sin rival)</span></div>`;
+                }
+            }
+            matchResults.innerHTML = rondas;
+        }
+    });
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    </script>
 </body>
 </html>

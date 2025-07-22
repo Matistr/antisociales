@@ -57,3 +57,67 @@ a:hover {
     bottom: 0;
     width: 100%;
 }
+
+.button-red {
+    background: linear-gradient(90deg, #ff1744 0%, #ff5252 100%);
+    color: #fff;
+    border: none;
+    padding: 20px 0;
+    border-radius: 100px;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-top: 22px;
+    margin-bottom: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px #000a;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 1px;
+    width: 220px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.button-red:hover {
+    background: linear-gradient(90deg, #ff5252 0%, #ff1744 100%);
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px #ff174455;
+}
+
+.select-red {
+    background: #232323;
+    color: #fff;
+    border: 2px solid #ff1744;
+    border-radius: 16px;
+    padding: 8px 16px;
+    font-size: 1em;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+textarea {
+    background: #181818;
+    color: #fff;
+    border: 2px solid #ff1744;
+    border-radius: 16px;
+    padding: 10px;
+    width: 100%;
+    font-size: 1em;
+    margin-top: 6px;
+    margin-bottom: 8px;
+    resize: vertical;
+}
+
+
+.match-red {
+    background: #232323;
+    border-left: 6px solid #ff1744;
+    border-radius: 12px;
+    padding: 10px 18px;
+    margin: 8px 0;
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 1px 6px #0006;
+}
